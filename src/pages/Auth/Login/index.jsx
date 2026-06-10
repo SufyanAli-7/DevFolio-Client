@@ -2,25 +2,36 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ConfigProvider, theme, Form, Input, Button, Checkbox, message } from 'antd'
 import { motion } from 'framer-motion'
+import axios from 'axios'
+import { useAuth } from '@/context/AuthContext'
 
 const Login = () => {
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const { backendUrl, readProfile } = useAuth()
 
   const onFinish = (values) => {
     setLoading(true)
     message.loading({ content: 'Signing you in...', key: 'login' })
 
-    // Simulate API registration/login call
-    setTimeout(() => {
-      message.success({ content: 'Welcome back to DevFolio!', key: 'login', duration: 2 })
-      setLoading(false)
-      // Save authentication mock state to local storage
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('user', JSON.stringify({ email: values.email }))
-      // Redirect to dashboard
-      navigate('/dashboard')
-    }, 1500)
+    axios.post(`${backendUrl}/api/auth/login`, {
+      email: values.email,
+      password: values.password
+    }, { withCredentials: true })
+      .then((res) => {
+        const { success, message: msg } = res.data
+        if (success) {
+          readProfile()
+          message.success({ content: msg || 'Welcome back to DevFolio!', key: 'login', duration: 2 })
+          
+        }
+      })
+      .catch((err) => {
+        const errMsg = err.response?.data?.message || 'Invalid email or password'
+        message.error({ content: errMsg, key: 'login', duration: 3 })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -109,8 +120,7 @@ const Login = () => {
               }
               name="password"
               rules={[
-                { required: true, message: 'Please input your password!' },
-                { min: 6, message: 'Password must be at least 6 characters!' }
+                { required: true, message: 'Please input your password!' }
               ]}
             >
               <Input.Password 

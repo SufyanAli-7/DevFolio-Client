@@ -2,25 +2,37 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ConfigProvider, theme, Form, Input, Button, Checkbox, message } from 'antd'
 import { motion } from 'framer-motion'
+import axios from 'axios'
+import { useAuth } from '@/context/AuthContext'
 
 const Register = () => {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const { backendUrl } = useAuth()
 
   const onFinish = (values) => {
     setLoading(true)
     message.loading({ content: 'Creating your account...', key: 'register' })
 
-    // Simulate API registration call
-    setTimeout(() => {
-      message.success({ content: 'Registration successful! Welcome to DevFolio.', key: 'register', duration: 2 })
-      setLoading(false)
-      // Save mock state to local storage
-      localStorage.setItem('isAuthenticated', 'true')
-      localStorage.setItem('user', JSON.stringify({ username: values.username, email: values.email }))
-      // Redirect to login page or dashboard
-      navigate('/auth/login')
-    }, 1500)
+    axios.post(`${backendUrl}/api/auth/register`, {
+      userName: values.username,
+      email: values.email,
+      password: values.password
+    }, { withCredentials: true })
+      .then((res) => {
+        const { success, message: msg } = res.data
+        if (success) {
+          message.success({ content: msg || 'Registration successful! Welcome to DevFolio.', key: 'register', duration: 2 })
+          navigate('/auth/login')
+        }
+      })
+      .catch((err) => {
+        const errMsg = err.response?.data?.message || 'Registration failed'
+        message.error({ content: errMsg, key: 'register', duration: 3 })
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const onFinishFailed = (errorInfo) => {
