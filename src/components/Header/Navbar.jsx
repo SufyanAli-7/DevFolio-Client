@@ -21,7 +21,7 @@ const Navbar = () => {
       key: 'profile',
       label: (
         <div className="px-3 py-2 flex flex-col min-w-37.5 select-none">
-          <span className="font-semibold text-white text-sm">{user?.userName || 'User'}</span>
+          <span className="font-semibold text-white text-sm">{user?.userName.charAt(0).toUpperCase() + user?.userName.slice(1) || 'User'}</span>
           <span className="text-zinc-500 text-xs mt-0.5">{user?.email}</span>
         </div>
       ),
@@ -170,7 +170,7 @@ const Navbar = () => {
                       {user?.userName?.charAt(0).toUpperCase() || 'U'}
                     </Avatar>
                     <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-white">{user?.userName}</span>
+                      <span className="text-sm font-semibold text-white">{user?.userName.charAt(0).toUpperCase() + user?.userName.slice(1)}</span>
                       <span className="text-zinc-500 text-xs">{user?.email}</span>
                     </div>
                   </div>
