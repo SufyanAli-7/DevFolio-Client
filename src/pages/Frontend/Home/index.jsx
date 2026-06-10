@@ -5,8 +5,10 @@ import Hero from './Hero'
 import Features from './Features'
 import HowItWorks from './HowItWorks'
 import Stats from './Stats'
+import { useAuth } from '@/context/AuthContext'
 
 const Home = () => {
+    const { isAuth } = useAuth()
     const showcases = [
         {
             name: 'Sarah Jenkins',
@@ -139,16 +141,16 @@ const Home = () => {
 
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
                             <Link
-                                to="/auth/register"
+                                to={isAuth ? "/dashboard" : "/auth/register"}
                                 className="w-full sm:w-auto text-center px-8 py-4 rounded-xl text-base font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-900/20 hover:shadow-blue-500/30 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
                             >
                                 Start Building for Free
                             </Link>
                             <Link
-                                to="/auth/login"
+                                to={isAuth ? "/dashboard" : "/auth/login"}
                                 className="w-full sm:w-auto text-center px-8 py-4 rounded-xl text-base font-semibold text-zinc-300 hover:text-white bg-zinc-900/80 hover:bg-zinc-800/80 border border-zinc-800/60 transition-all duration-200"
                             >
-                                Log In to Dashboard
+                                {isAuth ? "Go to Dashboard" : "Log In to Dashboard"}
                             </Link>
                         </div>
                     </motion.div>

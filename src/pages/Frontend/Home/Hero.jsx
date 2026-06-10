@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useAuth } from '@/context/AuthContext'
 
 const Hero = () => {
+  const { isAuth } = useAuth()
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -87,7 +89,7 @@ const Hero = () => {
           className="flex flex-col sm:flex-row items-center gap-4 mb-20 w-full sm:w-auto"
         >
           <Link
-            to="/auth/register"
+            to={isAuth ? "/dashboard" : "/auth/register"}
             className="w-full sm:w-auto text-center px-8 py-4 rounded-xl text-base font-semibold text-white bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-900/20 hover:shadow-blue-500/30 transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] border border-blue-400/20"
           >
             Create Your Portfolio
