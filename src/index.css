@@ -11,6 +11,121 @@ body {
   flex-direction: column;
 }
 
-main{
+main {
   flex: 1 0 auto;
+}
+
+
+.social-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.icon-container {
+  display: inline-flex;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.social-icon:hover .icon-container {
+  transform: translateY(-10px) scale(1.1);
+}
+
+.social-icon:hover .icon-label {
+  opacity: 1;
+  transform: translateY(5px);
+}
+
+.icon-label {
+  margin-top: 12px;
+  color: white;
+  font-weight: 500;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.social-icon.mail:hover .icon-container {
+  background: radial-gradient(circle at center, #3b82f6 0%, #1d4ed8 70%);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.social-icon.github:hover .icon-container {
+  background: #24292e;
+  box-shadow: 0 0 20px rgba(36, 41, 46, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.social-icon.linkedin:hover .icon-container {
+  background: #0077b5;
+  box-shadow: 0 0 20px rgba(0, 119, 181, 0.6);
+  border-color: rgba(0, 119, 181, 0.5);
+}
+
+.social-icon.whatsapp:hover .icon-container {
+  background: #25d366;
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+  border-color: rgba(37, 211, 102, 0.5);
+}
+
+.social-icon:hover svg {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+
+  20% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+
+  40% {
+    transform: translateX(5px) rotate(5deg);
+  }
+
+  60% {
+    transform: translateX(-5px) rotate(-5deg);
+  }
+
+  80% {
+    transform: translateX(5px) rotate(5deg);
+  }
+}
+
+.icon-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.social-icon:hover .icon-container::before {
+  opacity: 1;
 }
