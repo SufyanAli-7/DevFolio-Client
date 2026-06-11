@@ -21,7 +21,7 @@ const Navbar = () => {
       key: 'profile',
       label: (
         <div className="px-3 py-2 flex flex-col min-w-37.5 select-none">
-          <span className="font-semibold text-white text-sm">{user?.userName.charAt(0).toUpperCase() + user?.userName.slice(1) || 'User'}</span>
+          <span className="font-semibold text-white text-sm">{user?.userName?.charAt(0)?.toUpperCase() + user?.userName?.slice(1) || 'User'}</span>
           <span className="text-zinc-500 text-xs mt-0.5">{user?.email}</span>
         </div>
       ),
