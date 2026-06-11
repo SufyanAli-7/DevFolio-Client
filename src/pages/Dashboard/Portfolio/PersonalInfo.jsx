@@ -43,7 +43,7 @@ const PersonalInfo = () => {
     formData.append('bio', values.bio);
     
     if (fileList.length > 0) {
-      formData.append('image', fileList[0].originFileObj);
+      formData.append('image', fileList[0].originFileObj || fileList[0]);
     }
 
     try {
