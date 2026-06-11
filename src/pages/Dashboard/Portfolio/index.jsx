@@ -9,6 +9,7 @@ const Portfolio = () => {
     return (
         <Routes>
             <Route path='/' element={<PersonalInfo />} />
+            <Route path='/personal-info' element={<PersonalInfo />} />
             <Route path='/about' element={<About />} />
             <Route path='/skills' element={<Skills />} />
             <Route path='/projects' element={<Projects />} />

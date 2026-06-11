@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Layout, Menu, theme, ConfigProvider } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { items } from './Sidebaritems';
 import { useAuth } from '@/context/AuthContext';
 import Routes from './Routes';
@@ -10,6 +10,15 @@ const { Header, Content, Sider } = Layout;
 const Dashboard = () => {
     const { user, handleLogout } = useAuth();
     const [collapsed, setCollapsed] = useState(false);
+    const location = useLocation();
+    const currentPath = location.pathname;
+
+    const getSelectedKey = () => {
+        if (currentPath === '/dashboard/portfolio' || currentPath === '/dashboard/portfolio/') {
+            return ['/dashboard/portfolio/personal-info'];
+        }
+        return [currentPath];
+    };
 
     return (
         <ConfigProvider
@@ -60,7 +69,13 @@ const Dashboard = () => {
                             )}
                         </Link>
                     </div>
-                    <Menu theme='dark' defaultSelectedKeys={['1']} mode="inline" items={items} />
+                    <Menu 
+                        theme='dark' 
+                        selectedKeys={getSelectedKey()} 
+                        defaultOpenKeys={['portfolio-submenu']} 
+                        mode="inline" 
+                        items={items} 
+                    />
                 </Sider>
                 <Layout>
                     <Header 
