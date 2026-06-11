@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+import axios from 'axios'
+import { useAuth } from '@/context/AuthContext'
 
 // Mock database for showcase portfolios
 const portfoliosDb = {
@@ -98,37 +102,94 @@ const portfoliosDb = {
 
 const PortfolioView = () => {
   const { username } = useParams()
-  
-  // Find profile in mock db, or fallback to default
-  const profile = portfoliosDb[username?.toLowerCase()] || {
-    name: username ? username.charAt(0).toUpperCase() + username.slice(1) : 'Developer Profile',
-    role: 'Creative Developer',
-    image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80',
-    bio: 'Welcome to my portfolio! I build websites, solve complex problems, and showcase my development journey here.',
-    about: 'This is a custom portfolio page created using DevFolio. To edit this content, log in to your dashboard and update your profile details.',
-    skills: ['HTML', 'CSS', 'JavaScript', 'React', 'Git', 'Responsive Design'],
-    projects: [
-      {
-        title: 'Example Project One',
-        description: 'A stunning web application showcasing custom interactive sections and responsive interfaces.',
-        image: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80',
-        tags: ['React', 'CSS'],
-        codeLink: '#',
-        liveLink: '#'
-      },
-      {
-        title: 'Example Project Two',
-        description: 'An API service providing backend support and database storage.',
-        image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=600&q=80',
-        tags: ['Node.js', 'Express'],
-        codeLink: '#',
-        liveLink: '#'
-      }
-    ],
-    email: 'yourname@example.com',
-    github: 'https://github.com/developer',
-    linkedin: 'https://linkedin.com/in/developer',
-    whatsapp: 'https://wa.me/1234567890'
+  const { backendUrl } = useAuth()
+  const [profile, setProfile] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    axios.get(`${backendUrl}/api/portfolio/username/${username}`)
+      .then(res => {
+        if (res.data.success && res.data.portfolio) {
+          setProfile(res.data.portfolio)
+          setError(false)
+        }
+      })
+      .catch(err => {
+        // Fallback to mock DB if username is mock
+        const mockProfile = portfoliosDb[username?.toLowerCase()]
+        if (mockProfile) {
+          setProfile(mockProfile)
+          setError(false)
+        } else {
+          setError(true)
+        }
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [username, backendUrl])
+
+  const resolveImage = (path) => {
+    if (!path) return '';
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+      return path;
+    }
+    return `${backendUrl}${path}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-zinc-950 min-h-screen flex items-center justify-center relative">
+        {/* Dark Grid Background */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background: "#09090b",
+            backgroundImage: `
+              linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: "24px 24px, 24px 24px",
+            backgroundPosition: "0 0, 0 0",
+          }}
+        />
+        <Spin indicator={<LoadingOutlined style={{ fontSize: 40, color: '#2563eb' }} spin />} className="relative z-10" />
+      </div>
+    )
+  }
+
+  if (error || !profile) {
+    return (
+      <div className="bg-zinc-950 min-h-screen flex flex-col items-center justify-center p-4 relative">
+        {/* Dark Grid Background */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background: "#09090b",
+            backgroundImage: `
+              linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: "24px 24px, 24px 24px",
+            backgroundPosition: "0 0, 0 0",
+          }}
+        />
+        <div className="relative z-10 max-w-md w-full text-center bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+          <h2 className="text-3xl font-bold text-white mb-4">Portfolio Not Found</h2>
+          <p className="text-zinc-400 mb-8">
+            The developer portfolio you are looking for does not exist or has not been initialized yet.
+          </p>
+          <Link 
+            to="/" 
+            className="inline-block w-full py-3 px-6 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl shadow-lg transition-colors"
+          >
+            Go to Home
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -201,7 +262,7 @@ const PortfolioView = () => {
               <div className="absolute inset-0 rounded-full bg-linear-to-tr from-blue-500 to-indigo-500 opacity-20 group-hover:opacity-45 transition-opacity duration-300" />
               {profile.image ? (
                 <img 
-                  src={profile.image} 
+                  src={resolveImage(profile.image)} 
                   alt={profile.name} 
                   className="w-full h-full object-cover rounded-full z-10 group-hover:scale-105 transition-transform duration-500" 
                 />
@@ -258,7 +319,7 @@ const PortfolioView = () => {
               {/* Project Card Image */}
               <div className="w-full h-48 overflow-hidden bg-zinc-950 border-b border-zinc-900 relative">
                 <img 
-                  src={project.image || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80'} 
+                  src={resolveImage(project.image) || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80'} 
                   alt={project.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                 />
