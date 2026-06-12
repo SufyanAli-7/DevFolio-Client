@@ -116,7 +116,7 @@ const Hero = () => {
               <span className="w-3 h-3 rounded-full bg-red-500/80" />
               <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <span className="w-3 h-3 rounded-full bg-green-500/80" />
-              <span className="ml-4 text-xs font-mono text-zinc-500 tracking-wider">devfolio.com/dashboard</span>
+              <span className="ml-4 text-xs font-mono text-zinc-500 tracking-wider">{window.location.origin}/dashboard</span>
             </div>
             <div className="overflow-hidden rounded-b-xl bg-zinc-950/90 aspect-16/10">
               <img
