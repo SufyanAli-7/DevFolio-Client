@@ -4,6 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { items } from './Sidebaritems';
 import { useAuth } from '@/context/AuthContext';
 import Routes from './Routes';
+import { 
+    DashboardOutlined, 
+    IdcardOutlined, 
+    InfoCircleOutlined, 
+    ThunderboltOutlined, 
+    ProjectOutlined, 
+    ShareAltOutlined 
+} from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
 
@@ -18,6 +26,22 @@ const Dashboard = () => {
             return ['/dashboard/portfolio/personal-info'];
         }
         return [currentPath];
+    };
+
+    const navItems = [
+        { key: '/dashboard', label: 'Overview', icon: <DashboardOutlined />, link: '/dashboard' },
+        { key: '/dashboard/portfolio/personal-info', label: 'Info', icon: <IdcardOutlined />, link: '/dashboard/portfolio/personal-info' },
+        { key: '/dashboard/portfolio/about', label: 'About', icon: <InfoCircleOutlined />, link: '/dashboard/portfolio/about' },
+        { key: '/dashboard/portfolio/skills', label: 'Skills', icon: <ThunderboltOutlined />, link: '/dashboard/portfolio/skills' },
+        { key: '/dashboard/portfolio/projects', label: 'Projects', icon: <ProjectOutlined />, link: '/dashboard/portfolio/projects' },
+        { key: '/dashboard/portfolio/social-links', label: 'Socials', icon: <ShareAltOutlined />, link: '/dashboard/portfolio/social-links' }
+    ];
+
+    const isItemActive = (itemLink) => {
+        if (itemLink === '/dashboard/portfolio/personal-info' && (currentPath === '/dashboard/portfolio' || currentPath === '/dashboard/portfolio/')) {
+            return true;
+        }
+        return currentPath === itemLink;
     };
 
     return (
@@ -54,6 +78,7 @@ const Dashboard = () => {
                     collapsed={collapsed}
                     onCollapse={value => setCollapsed(value)}
                     style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'auto', alignSelf: 'flex-start', borderRight: '1px solid #27272a' }}
+                    className="hidden md:block"
                 >
                     <div className='py-3 flex justify-center items-center'>
                         <Link to="/" className="flex items-center space-x-2 group">
@@ -103,11 +128,28 @@ const Dashboard = () => {
                             </Button>
                         </div>
                     </Header>
-                    <Content className='p-6 bg-zinc-950'>
+                    <Content className='p-6 bg-zinc-950 pb-24 md:pb-6'>
                         <Routes />
                     </Content>
                 </Layout>
             </Layout>
+
+            {/* Mobile Bottom Navigation Bar */}
+            <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800/85 px-2 py-2 flex justify-around items-center h-16 shadow-2xl">
+                {navItems.map((item) => {
+                    const active = isItemActive(item.link);
+                    return (
+                        <Link 
+                            key={item.key} 
+                            to={item.link} 
+                            className={`flex flex-col items-center justify-center grow transition-all duration-200 ${active ? 'text-blue-500 font-semibold scale-105' : 'text-zinc-500 hover:text-zinc-300'}`}
+                        >
+                            <span className="text-xl mb-0.5">{item.icon}</span>
+                            <span className="text-[10px] leading-none tracking-tight">{item.label}</span>
+                        </Link>
+                    );
+                })}
+            </div>
         </ConfigProvider>
     );
 };
