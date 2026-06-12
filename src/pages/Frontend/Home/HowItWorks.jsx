@@ -6,22 +6,22 @@ const HowItWorks = () => {
     {
       number: '01',
       title: 'Create an Account',
-      description: 'Sign up in seconds. All you need is an email and a unique username to claim your portfolio URL.'
+      description: 'Sign up with your email and create your DevFolio account in just a few clicks.'
     },
     {
       number: '02',
-      title: 'Add Projects & Skills',
-      description: 'Fill out your profile. Add your experience, skills, and projects with tags, descriptions, and source code links.'
+      title: 'Complete Your Profile',
+      description: 'Add your personal information, professional role, profile image, and bio to build your identity.'
     },
     {
       number: '03',
-      title: 'Choose Your Design',
-      description: 'Select from our pre-styled, high-performance layout themes that fit your unique personality.'
+      title: 'Add Skills & Projects',
+      description: 'Showcase your expertise by adding technical skills, projects, technologies, and portfolio work.'
     },
     {
       number: '04',
-      title: 'Share & Go Live',
-      description: 'Get your instant, live link at devfolio.com/portfolio/:username and share it on resumes and social channels.'
+      title: 'Publish Your Portfolio',
+      description: 'Preview your portfolio and share your professional profile with recruiters, clients, and employers.'
     }
   ]
 
