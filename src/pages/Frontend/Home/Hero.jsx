@@ -122,7 +122,7 @@ const Hero = () => {
               <img
                 src="/dashboard_mockup.png"
                 alt="DevFolio Dashboard Mockup"
-                className="w-full h-full object-cover object-top hover:scale-[1.01] transition-transform duration-700"
+                className="w-full h-full object-contain object-center hover:scale-[1.01] transition-transform duration-700"
                 loading="eager"
               />
             </div>
