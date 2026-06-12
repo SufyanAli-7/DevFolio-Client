@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const Showcase = () => {
     const showcases = [
@@ -65,8 +66,8 @@ const Showcase = () => {
 
                             {/* Link Tag */}
                             <div className="mb-6 py-2 px-3.5 rounded-lg bg-zinc-950 border border-zinc-900 text-xs font-mono text-zinc-400 flex justify-between items-center group-hover:border-zinc-800 transition-colors">
-                                <span>devfolio.com/portfolio/{showcase.username}</span>
-                                <span className="text-blue-500 hover:underline cursor-pointer font-semibold">View</span>
+                                <span>{import.meta.env.VITE_PORTFOLIO_URL}{showcase.username}</span>
+                                <span className="text-blue-500 hover:underline cursor-pointer font-semibold"><Link to={"https://" + import.meta.env.VITE_PORTFOLIO_URL + showcase.username} target='_blank'>View</Link></span>
                             </div>
 
                             <div className="flex flex-wrap gap-2 mb-8">
