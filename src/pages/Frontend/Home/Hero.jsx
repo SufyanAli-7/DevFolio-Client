@@ -54,9 +54,9 @@ const Hero = () => {
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/40 backdrop-blur-md text-zinc-300 text-xs sm:text-sm font-medium mb-8 cursor-pointer hover:border-zinc-700 hover:bg-zinc-900/60 transition-all duration-300"
         >
           <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-          <span className="text-zinc-400">✨ Claim your custom URL</span>
+          <span className="text-zinc-400">🔥 Launch Your Portfolio</span>
           <span className="text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold ml-1">
-            portfolio/:username
+            ⚡ Create. Manage. Showcase.
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
             </svg>
