@@ -7,23 +7,23 @@ const Showcase = () => {
         {
             name: 'Sarah Jenkins',
             role: 'Frontend Architect',
-            skills: ['React', 'TypeScript', 'Tailwind', 'Three.js'],
+            skills: ['React', 'TypeScript', 'Tailwind', 'Three.js', 'JavaScript', 'CSS'],
             image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80',
             username: 'sarahj',
             color: 'from-blue-500 to-cyan-500'
         },
         {
-            name: 'Marcus Chen',
+            name: 'Muhammad Sufyan Ali',
             role: 'Full Stack Engineer',
-            skills: ['Next.js', 'Node.js', 'PostgreSQL', 'GraphQL'],
-            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-            username: 'marcusc',
+            skills: ['Next.js', 'Node.js', 'PostgreSQL', 'MongoDB', 'React.js', 'Express.js'],
+            image: 'https://res.cloudinary.com/dvdvw8azo/image/upload/v1781159203/en7ifieggvwo3awxrlei.jpg',
+            username: 'Sufyan_Ali',
             color: 'from-purple-500 to-pink-500'
         },
         {
             name: 'Elena Rostova',
             role: 'Product Designer',
-            skills: ['Framer', 'Figma', 'Aesthetics', 'UI Design'],
+            skills: ['Framer', 'Figma', 'Aesthetics', 'UI Design', 'Framer', 'Figma'],
             image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
             username: 'elenar',
             color: 'from-indigo-500 to-purple-500'
