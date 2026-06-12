@@ -232,7 +232,7 @@ const Hero = () => {
       {/* Top Cards Row */}
       <Row gutter={[16, 16]} className="mb-8">
         <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg">
+          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-[116px] flex flex-col justify-center">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Skills</span>
@@ -246,7 +246,7 @@ const Hero = () => {
         </Col>
 
         <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg">
+          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-[116px] flex flex-col justify-center">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Projects</span>
@@ -260,7 +260,7 @@ const Hero = () => {
         </Col>
 
         <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg">
+          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-[116px] flex flex-col justify-center">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Portfolio Status</span>
@@ -276,7 +276,7 @@ const Hero = () => {
         </Col>
 
         <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg">
+          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-[116px] flex flex-col justify-center">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Completion Score</span>
