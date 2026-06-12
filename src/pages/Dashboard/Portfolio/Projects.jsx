@@ -6,6 +6,19 @@ import { useAuth } from '@/context/AuthContext';
 
 const Projects = () => {
   const { backendUrl } = useAuth();
+  const resolveImage = (path) => {
+    if (!path) {
+      return "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg";
+    }
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+      return path;
+    }
+    if (path === "/temp/default-project.png") {
+      return "https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg";
+    }
+    return `${backendUrl}${path}`;
+  };
+
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hasPortfolio, setHasPortfolio] = useState(true);
@@ -143,7 +156,7 @@ const Projects = () => {
       render: (text, record) => (
         <div className="w-16 h-10 rounded overflow-hidden bg-zinc-950 border border-zinc-800 flex items-center justify-center">
           {record.image ? (
-            <img src={`${backendUrl}${record.image}`} alt={record.title} className="w-full h-full object-cover" />
+            <img src={resolveImage(record.image)} alt={record.title} className="w-full h-full object-cover" />
           ) : (
             <span className="text-[10px] text-zinc-600">No Image</span>
           )}
@@ -310,7 +323,7 @@ const Projects = () => {
               {fileList.length > 0 ? (
                 <img src={URL.createObjectURL(fileList[0])} alt="Project Cover Preview" className="w-full h-full object-cover" />
               ) : editingProject?.image ? (
-                <img src={`${backendUrl}${editingProject.image}`} alt="Project Cover Preview" className="w-full h-full object-cover" />
+                <img src={resolveImage(editingProject.image)} alt="Project Cover Preview" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-zinc-600 text-[10px] font-semibold text-center px-1">No Cover Selected</span>
               )}

@@ -12,6 +12,19 @@ const PersonalInfo = () => {
   const [fileList, setFileList] = useState([]);
   const [previewImage, setPreviewImage] = useState('');
 
+  const resolveImage = (path) => {
+    if (!path) {
+      return "https://res.cloudinary.com/demo/image/upload/d_avatar.png/avatar.png";
+    }
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+      return path;
+    }
+    if (path === "/temp/default-avatar.png") {
+      return "https://res.cloudinary.com/demo/image/upload/d_avatar.png/avatar.png";
+    }
+    return `${backendUrl}${path}`;
+  };
+
   useEffect(() => {
     // Fetch existing portfolio data
     axios.get(`${backendUrl}/api/portfolio/me`, { withCredentials: true })
@@ -20,7 +33,7 @@ const PersonalInfo = () => {
           const { name, role, bio, image } = res.data.portfolio;
           form.setFieldsValue({ name, role, bio });
           if (image) {
-            setPreviewImage(`${backendUrl}${image}`);
+            setPreviewImage(resolveImage(image));
           }
         }
       })
@@ -54,7 +67,7 @@ const PersonalInfo = () => {
       if (res.data.success) {
         message.success("Personal information updated successfully!");
         if (res.data.portfolio?.image) {
-          setPreviewImage(`${backendUrl}${res.data.portfolio.image}`);
+          setPreviewImage(resolveImage(res.data.portfolio.image));
           setFileList([]);
         }
       }
