@@ -206,7 +206,7 @@ const Projects = () => {
       key: 'tags',
       width: '15%',
       render: (tags) => (
-        <div className="flex flex-wrap gap-1 max-w-[150px]">
+        <div className="flex flex-wrap gap-1 max-w-37.5">
           {tags && tags.map((tag, i) => (
             <Tag key={i} className="bg-zinc-800 text-blue-300 border-zinc-750 text-[10px] px-1.5 py-0.5 rounded m-0">
               {tag}
@@ -291,6 +291,7 @@ const Projects = () => {
           pagination={false}
           className="dark-antd-table bg-transparent"
           locale={{ emptyText: <span className="text-zinc-600">No projects added yet</span> }}
+          scroll={{ x: 800 }}
         />
       </Card>
 
