@@ -1,11 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ConfigProvider, theme, Dropdown, Avatar } from 'antd'
 import { useAuth } from '@/context/AuthContext'
+import axios from 'axios'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { isAuth, user, handleLogout } = useAuth()
+  const { isAuth, user, handleLogout, backendUrl } = useAuth()
+  const [portfolio, setPortfolio] = useState(null)
+
+  useEffect(() => {
+    if (isAuth) {
+      axios.get(`${backendUrl}/api/portfolio/me`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success && res.data.portfolio) {
+            setPortfolio(res.data.portfolio);
+          }
+        })
+        .catch(err => {
+          setPortfolio(null);
+        });
+    } else {
+      setPortfolio(null);
+    }
+  }, [isAuth, backendUrl]);
+
+  const resolveImage = (path) => {
+    if (!path) {
+      return "https://res.cloudinary.com/demo/image/upload/d_avatar.png/avatar.png";
+    }
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+      return path;
+    }
+    if (path === "/temp/default-avatar.png") {
+      return "https://res.cloudinary.com/demo/image/upload/d_avatar.png/avatar.png";
+    }
+    return `${backendUrl}${path}`;
+  };
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
@@ -99,7 +130,7 @@ const Navbar = () => {
                 >
                   <Avatar 
                     size="large" 
-                    src={user?.image} 
+                    src={resolveImage(portfolio?.image)} 
                     className="cursor-pointer border border-blue-500/40 hover:border-blue-500 transition-colors bg-blue-600 shadow-md shadow-blue-600/10 font-bold"
                   >
                     {user?.userName?.charAt(0).toUpperCase() || 'U'}
@@ -166,7 +197,10 @@ const Navbar = () => {
               {isAuth ? (
                 <>
                   <div className="flex items-center gap-3 px-3 py-2 mb-2">
-                    <Avatar style={{ backgroundColor: '#2563eb' }} className="font-bold">
+                    <Avatar 
+                      src={resolveImage(portfolio?.image)}
+                      className="font-bold border border-blue-500/40 bg-blue-600"
+                    >
                       {user?.userName?.charAt(0).toUpperCase() || 'U'}
                     </Avatar>
                     <div className="flex flex-col">
