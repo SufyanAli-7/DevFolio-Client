@@ -8,6 +8,33 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { isAuth, user, handleLogout, backendUrl } = useAuth()
   const [portfolio, setPortfolio] = useState(null)
+  const [activeSection, setActiveSection] = useState('')
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200 // offset for navbar
+      const sections = ['features', 'how-it-works', 'stats', 'showcase']
+
+      // Find which section is currently in view
+      let currentSection = ''
+      for (const section of sections) {
+        const el = document.getElementById(section)
+        if (el) {
+          const top = el.offsetTop
+          const height = el.offsetHeight
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            currentSection = section
+            break
+          }
+        }
+      }
+      setActiveSection(currentSection)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // initial call
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     if (isAuth) {
@@ -101,15 +128,20 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors duration-200"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.replace('#', '')
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors duration-200 ${
+                    isActive ? 'text-white font-semibold' : 'text-zinc-400 hover:text-zinc-100'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              )
+            })}
           </div>
 
           {/* Action Buttons */}
@@ -182,16 +214,23 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden border-t border-zinc-900 bg-zinc-950/95 backdrop-blur-xl transition-all duration-300 ease-in-out" id="mobile-menu">
             <div className="px-2 pt-4 pb-3 space-y-1 sm:px-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block px-3 py-2.5 rounded-lg text-base font-medium text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/50 transition-colors duration-200"
-                >
-                  {link.name}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace('#', '')
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`block px-3 py-2.5 rounded-lg text-base font-medium transition-colors duration-200 ${
+                      isActive 
+                        ? 'text-white bg-zinc-900/50 font-semibold' 
+                        : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/50'
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                )
+              })}
             </div>
             <div className="pt-4 pb-4 border-t border-zinc-900 px-5 flex flex-col gap-3">
               {isAuth ? (
