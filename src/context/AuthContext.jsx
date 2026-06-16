@@ -25,7 +25,7 @@ const AuthContextProvider = ({ children }) => {
     const navigate = useNavigate()
     const [isAppLoading, setIsAppLoading] = useState(true)
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || ""
 
     const readProfile = () => {
         axios.defaults.withCredentials = true;
