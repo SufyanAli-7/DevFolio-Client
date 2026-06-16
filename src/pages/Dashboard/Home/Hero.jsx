@@ -12,7 +12,8 @@ import {
   LoadingOutlined,
   ArrowRightOutlined,
   GlobalOutlined,
-  GithubOutlined
+  GithubOutlined,
+  AppstoreOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -118,6 +119,9 @@ const Hero = () => {
   };
 
   const { percent, missing } = calculateCompletion(portfolio);
+  const totalCategories = portfolio?.projects 
+    ? new Set(portfolio.projects.map(p => p.category || 'Web Development')).size 
+    : 0;
   const publicUrl = `${window.location.origin}/portfolio/${user?.userName}`;
 
   const copyToClipboard = () => {
@@ -229,71 +233,80 @@ const Hero = () => {
         </div>
       )}
 
-      {/* Top Cards Row */}
-      <Row gutter={[16, 16]} className="mb-8">
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Skills</span>
-                <span className="text-white text-3xl font-extrabold mt-1 block">{portfolio?.skills?.length || 0}</span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-blue-900/20 border border-blue-500/20 flex items-center justify-center text-blue-400 text-lg">
-                <ThunderboltOutlined />
-              </div>
+      {/* Top Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {/* Card 1: Total Skills */}
+        <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Skills</span>
+              <span className="text-white text-3xl font-extrabold mt-1 block">{portfolio?.skills?.length || 0}</span>
             </div>
-          </Card>
-        </Col>
+            <div className="w-10 h-10 rounded-xl bg-blue-900/20 border border-blue-500/20 flex items-center justify-center text-blue-400 text-lg">
+              <ThunderboltOutlined />
+            </div>
+          </div>
+        </Card>
 
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Projects</span>
-                <span className="text-white text-3xl font-extrabold mt-1 block">{portfolio?.projects?.length || 0}</span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center text-purple-400 text-lg">
-                <ProjectOutlined />
-              </div>
+        {/* Card 2: Total Projects */}
+        <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Projects</span>
+              <span className="text-white text-3xl font-extrabold mt-1 block">{portfolio?.projects?.length || 0}</span>
             </div>
-          </Card>
-        </Col>
+            <div className="w-10 h-10 rounded-xl bg-purple-900/20 border border-purple-500/20 flex items-center justify-center text-purple-400 text-lg">
+              <ProjectOutlined />
+            </div>
+          </div>
+        </Card>
 
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Portfolio Status</span>
-                <span className={`text-xs font-bold px-2 py-0.5 rounded mt-2 inline-block ${hasPortfolio ? 'bg-emerald-950 text-emerald-400 border border-emerald-900' : 'bg-yellow-950/80 text-yellow-500 border border-yellow-900'}`}>
-                  {hasPortfolio ? 'Active & Live' : 'Not Configured'}
-                </span>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-900/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-lg">
-                <GlobalOutlined />
-              </div>
+        {/* Card 3: Total Categories */}
+        <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Total Categories</span>
+              <span className="text-white text-3xl font-extrabold mt-1 block">{totalCategories}</span>
             </div>
-          </Card>
-        </Col>
+            <div className="w-10 h-10 rounded-xl bg-amber-900/20 border border-amber-500/20 flex items-center justify-center text-amber-500 text-lg">
+              <AppstoreOutlined />
+            </div>
+          </div>
+        </Card>
 
-        <Col xs={24} sm={12} lg={6}>
-          <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Completion Score</span>
-                <span className="text-white text-3xl font-extrabold mt-1 block">{percent}%</span>
-              </div>
-              <Progress 
-                type="circle" 
-                percent={percent} 
-                width={44} 
-                strokeColor="#2563eb" 
-                trailColor="#27272a" 
-                showInfo={false}
-              />
+        {/* Card 4: Portfolio Status */}
+        <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Portfolio Status</span>
+              <span className={`text-xs font-bold px-2 py-0.5 rounded mt-2 inline-block ${hasPortfolio ? 'bg-emerald-950 text-emerald-400 border border-emerald-900' : 'bg-yellow-950/80 text-yellow-500 border border-yellow-900'}`}>
+                {hasPortfolio ? 'Active & Live' : 'Not Configured'}
+              </span>
             </div>
-          </Card>
-        </Col>
-      </Row>
+            <div className="w-10 h-10 rounded-xl bg-emerald-900/20 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-lg">
+              <GlobalOutlined />
+            </div>
+          </div>
+        </Card>
+
+        {/* Card 5: Completion Score */}
+        <Card className="bg-zinc-900 border-zinc-800/80 rounded-2xl shadow-lg h-full min-h-29 flex flex-col justify-center">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider block">Completion Score</span>
+              <span className="text-white text-3xl font-extrabold mt-1 block">{percent}%</span>
+            </div>
+            <Progress 
+              type="circle" 
+              percent={percent} 
+              width={44} 
+              strokeColor="#2563eb" 
+              trailColor="#27272a" 
+              showInfo={false}
+            />
+          </div>
+        </Card>
+      </div>
 
       {/* Main Content Sections */}
       <Row gutter={[16, 16]}>
