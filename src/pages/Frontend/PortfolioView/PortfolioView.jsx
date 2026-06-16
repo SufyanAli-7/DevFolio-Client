@@ -22,7 +22,8 @@ const portfoliosDb = {
         image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80',
         tags: ['Three.js', 'React', 'Tailwind'],
         codeLink: '#',
-        liveLink: '#'
+        liveLink: '#',
+        category: 'Web Development'
       },
       {
         title: 'Component Library Spec',
@@ -30,7 +31,8 @@ const portfoliosDb = {
         image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=600&q=80',
         tags: ['TypeScript', 'CSS', 'Tailwind'],
         codeLink: '#',
-        liveLink: '#'
+        liveLink: '#',
+        category: 'Web Development'
       }
     ],
     email: 'sarah.j@devfolio.com',
@@ -52,7 +54,8 @@ const portfoliosDb = {
         image: 'https://images.unsplash.com/photo-1611746872915-64382b5c76da?auto=format&fit=crop&w=600&q=80',
         tags: ['Node.js', 'Redis', 'WebSockets'],
         codeLink: '#',
-        liveLink: '#'
+        liveLink: '#',
+        category: 'Web Development'
       },
       {
         title: 'Task Sync Engine',
@@ -60,7 +63,8 @@ const portfoliosDb = {
         image: 'https://images.unsplash.com/photo-1484417894907-623942c8ea29?auto=format&fit=crop&w=600&q=80',
         tags: ['GraphQL', 'PostgreSQL', 'Docker'],
         codeLink: '#',
-        liveLink: '#'
+        liveLink: '#',
+        category: 'Mobile Development'
       }
     ],
     email: 'marcus.c@devfolio.com',
@@ -82,7 +86,8 @@ const portfoliosDb = {
         image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80',
         tags: ['Figma', 'Framer', 'UI Design'],
         codeLink: '#',
-        liveLink: '#'
+        liveLink: '#',
+        category: 'Graphic Design'
       },
       {
         title: 'DevFolio Theme Spec',
@@ -90,7 +95,8 @@ const portfoliosDb = {
         image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80',
         tags: ['Aesthetics', 'CSS', 'Tailwind'],
         codeLink: '#',
-        liveLink: '#'
+        liveLink: '#',
+        category: 'Web Development'
       }
     ],
     email: 'elena.r@devfolio.com',
@@ -106,6 +112,7 @@ const PortfolioView = () => {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
     setLoading(true)
@@ -309,15 +316,42 @@ const PortfolioView = () => {
 
       {/* Projects Section */}
       <section className="py-16 max-w-4xl mx-auto px-4 border-t border-zinc-900 relative z-10">
-        <h2 className="text-2xl font-bold text-white mb-8">Featured Projects</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <h2 className="text-2xl font-bold text-white">Featured Projects</h2>
+          
+          {/* Category Tabs */}
+          <div className="flex flex-wrap gap-2">
+            {['All', ...new Set(profile.projects.map(p => p.category || 'Web Development'))].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-300 ${
+                  selectedCategory === cat
+                    ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-600/20'
+                    : 'bg-zinc-900/50 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {profile.projects.map((project, index) => (
+          {(selectedCategory === 'All' 
+            ? profile.projects 
+            : profile.projects.filter(p => (p.category || 'Web Development') === selectedCategory)
+          ).map((project, index) => (
             <div
               key={index}
               className="overflow-hidden rounded-2xl border border-zinc-800/85 bg-zinc-950 hover:border-zinc-700/80 transition-all duration-300 flex flex-col group shadow-2xl shadow-black/80 hover:shadow-blue-950/10 hover:-translate-y-1"
             >
               {/* Project Card Image */}
               <div className="w-full h-48 overflow-hidden bg-zinc-950 border-b border-zinc-900 relative">
+                {/* Category Badge */}
+                <span className="absolute top-3 right-3 z-20 px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-blue-600/90 text-white backdrop-blur-xs shadow-md border border-blue-500/30">
+                  {project.category || 'Web Development'}
+                </span>
                 <img 
                   src={resolveImage(project.image) || 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80'} 
                   alt={project.title} 

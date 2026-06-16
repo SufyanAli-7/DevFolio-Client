@@ -72,6 +72,7 @@ const Projects = () => {
       codeLink: project.codeLink,
       liveLink: project.liveLink,
       tags: project.tags || [],
+      category: project.category || "Web Development",
     });
     setIsModalOpen(true);
   };
@@ -84,6 +85,7 @@ const Projects = () => {
     formData.append('codeLink', values.codeLink);
     formData.append('liveLink', values.liveLink);
     formData.append('tags', JSON.stringify(values.tags || []));
+    formData.append('category', values.category || "Web Development");
 
     if (fileList.length > 0) {
       formData.append('image', fileList[0].originFileObj || fileList[0]);
@@ -152,7 +154,7 @@ const Projects = () => {
     {
       title: <span className="text-zinc-400 font-semibold text-sm">Cover</span>,
       key: 'image',
-      width: '15%',
+      width: '12%',
       render: (text, record) => (
         <div className="w-16 h-10 rounded overflow-hidden bg-zinc-950 border border-zinc-800 flex items-center justify-center">
           {record.image ? (
@@ -167,14 +169,21 @@ const Projects = () => {
       title: <span className="text-zinc-400 font-semibold text-sm">Title</span>,
       dataIndex: 'title',
       key: 'title',
-      width: '20%',
+      width: '15%',
       render: (text) => <span className="text-white font-medium">{text}</span>,
+    },
+    {
+      title: <span className="text-zinc-400 font-semibold text-sm">Category</span>,
+      dataIndex: 'category',
+      key: 'category',
+      width: '15%',
+      render: (text) => <Tag className="bg-blue-950/40 text-blue-400 border-blue-900/40 text-xs px-2 py-0.5 rounded-md m-0">{text || 'Web Development'}</Tag>,
     },
     {
       title: <span className="text-zinc-400 font-semibold text-sm">Description</span>,
       dataIndex: 'description',
       key: 'description',
-      width: '30%',
+      width: '25%',
       render: (text) => (
         <span className="text-zinc-400 text-xs block max-w-xs truncate" title={text}>
           {text}
@@ -184,7 +193,7 @@ const Projects = () => {
     {
       title: <span className="text-zinc-400 font-semibold text-sm">Links</span>,
       key: 'links',
-      width: '12%',
+      width: '10%',
       render: (text, record) => (
         <Space size="middle">
           {record.codeLink && (
@@ -385,6 +394,25 @@ const Projects = () => {
               />
             </Form.Item>
           </div>
+
+          <Form.Item
+            name="category"
+            label={<span className="text-zinc-300 font-medium">Project Category</span>}
+            rules={[{ required: true, message: 'Please select project category' }]}
+            initialValue="Web Development"
+          >
+            <Select 
+              placeholder="Select project category"
+              dropdownStyle={{ background: '#18181b', border: '1px solid #27272a' }}
+              className="dark-select bg-zinc-950 text-zinc-100"
+              options={[
+                { value: 'Web Development', label: 'Web Development' },
+                { value: 'Mobile Development', label: 'Mobile Development' },
+                { value: 'Graphic Design', label: 'Graphic Design' },
+                { value: 'Data Analysis', label: 'Data Analysis' },
+              ]}
+            />
+          </Form.Item>
 
           <Form.Item
             name="tags"
