@@ -30,6 +30,9 @@ const Projects = () => {
   const [fileList, setFileList] = useState([]);
   const [form] = Form.useForm();
 
+  const [searchText, setSearchText] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('All');
+
   const fetchProjects = () => {
     setLoading(true);
     axios.get(`${backendUrl}/api/portfolio/me`, { withCredentials: true })
@@ -278,6 +281,19 @@ const Projects = () => {
     );
   }
 
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearch = 
+      project.title?.toLowerCase().includes(searchText.toLowerCase()) ||
+      project.description?.toLowerCase().includes(searchText.toLowerCase()) ||
+      (project.tags && project.tags.some(tag => tag.toLowerCase().includes(searchText.toLowerCase())));
+    
+    const matchesCategory = 
+      categoryFilter === 'All' || 
+      (project.category || 'Web Development') === categoryFilter;
+
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="max-w-5xl mx-auto py-4">
       <Card 
@@ -294,12 +310,35 @@ const Projects = () => {
         }
         className="bg-zinc-900 border-zinc-800/80 shadow-xl rounded-2xl"
       >
+        {/* Search & Filter Bar */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <Input.Search
+            placeholder="Search projects by title, description, or tags..."
+            allowClear
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full sm:max-w-md search-dark"
+          />
+          <Select
+            value={categoryFilter}
+            onChange={(value) => setCategoryFilter(value)}
+            className="w-full sm:w-56 dark-select"
+            dropdownStyle={{ background: '#18181b', border: '1px solid #27272a' }}
+            options={[
+              { value: 'All', label: 'All Categories' },
+              { value: 'Web Development', label: 'Web Development' },
+              { value: 'Mobile Development', label: 'Mobile Development' },
+              { value: 'Graphic Design', label: 'Graphic Design' },
+              { value: 'Data Analysis', label: 'Data Analysis' },
+            ]}
+          />
+        </div>
+
         <Table 
           columns={columns} 
-          dataSource={projects.map(p => ({ ...p, key: p._id }))} 
+          dataSource={filteredProjects.map(p => ({ ...p, key: p._id }))} 
           pagination={false}
           className="dark-antd-table bg-transparent"
-          locale={{ emptyText: <span className="text-zinc-600">No projects added yet</span> }}
+          locale={{ emptyText: <span className="text-zinc-600">No projects match your search or filter</span> }}
           scroll={{ x: 800 }}
         />
       </Card>
