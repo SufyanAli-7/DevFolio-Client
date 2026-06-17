@@ -108,7 +108,10 @@ const Dashboard = () => {
                         style={{ 
                             background: '#18181b',
                             height: '64px',
-                            lineHeight: '64px'
+                            lineHeight: '64px',
+                            position: 'sticky',
+                            top: 0,
+                            zIndex: 40
                         }}
                     >
                         {/* User Profile Info & Logout */}
