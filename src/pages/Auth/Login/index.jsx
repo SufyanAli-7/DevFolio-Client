@@ -115,7 +115,7 @@ const Login = () => {
               label={
                 <div className="flex justify-between w-full items-center">
                   <span className="text-zinc-300 text-sm">Password</span>
-                  {/* <a href="#" className="text-xs text-blue-400 hover:underline">Forgot?</a> */}
+                  <Link to="/auth/forgot-password" className="text-xs text-blue-400 hover:underline">Forgot?</Link>
                 </div>
               }
               name="password"
